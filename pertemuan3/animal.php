@@ -38,6 +38,7 @@ class Animal
     }
 }
 
+
 # membuat object
 # kirimkan data hewan (array) ke constructor
 $animal = new Animal([]);

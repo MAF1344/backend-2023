@@ -6,7 +6,6 @@ class StudentController {
   async index(req, res) {
     // memanggil method static all dengan async await.
     const students = await Student.all();
-
     const data = {
       message: 'Menampilkkan semua students',
       data: students,
@@ -37,27 +36,41 @@ class StudentController {
     }
   }
 
-  update(req, res) {
+  async update(req, res) {
     const {id} = req.params;
     const {nama} = req.body;
 
-    const data = {
-      message: `Mengedit student id ${id}, nama ${nama}`,
-      data: [],
-    };
+    try {
+      const updatedStudent = await Student.updateStudent(id, {nama});
 
-    res.json(data);
+      const data = {
+        message: `Mengedit student id ${id}, nama ${nama}`,
+        data: updatedStudent,
+      };
+
+      res.json(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({message: 'Terjadi kesalahan pada server'});
+    }
   }
 
-  destroy(req, res) {
+  async destroy(req, res) {
     const {id} = req.params;
 
-    const data = {
-      message: `Menghapus student id ${id}`,
-      data: [],
-    };
+    try {
+      const deletedStudent = await Student.deleteStudent(id);
 
-    res.json(data);
+      const data = {
+        message: `Menghapus student id ${id}`,
+        data: deletedStudent,
+      };
+
+      res.json(data);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({message: 'Terjadi kesalahan pada server'});
+    }
   }
 }
 
